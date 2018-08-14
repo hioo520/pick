@@ -2,6 +2,7 @@ package Pick.core;
 
 
 import Pick.bean.PickEnum;
+import Pick.util.NullEmptyTool;
 
 import java.util.*;
 
@@ -12,6 +13,23 @@ import java.util.*;
  */
 public class PickToolImpl {
 
+    public Map batchMap(Map map, PickEnum enums, String... str) {
+
+        if (map == null || map.size() == 0)
+            throw new IndexOutOfBoundsException("调用batch: 输入的是null! 或者为空值");
+        Map result = new HashMap<>(str.length);
+        for (String property : str) {
+            Object str0 = map.get(property);
+            if (NullEmptyTool.isNNoEE(str0))
+                result.put(property, str0);
+            else if (enums.getVulue() == 0)
+                result.put(property, "");
+            else {
+                throw new RuntimeException("数据输出超出范围 参考PickEnum定义");
+            }
+        }
+        return result;
+    }
 
     public <T> Collection batch(List<T> list, PickEnum enums, String... str) throws Exception {
 
@@ -25,7 +43,12 @@ public class PickToolImpl {
             Map map = new HashMap<>(str.length);
             for (String property : str) {
                 StringBuffer getName = new StringBuffer().append("get").append(property.substring(0, 1).toUpperCase()).append(property.substring(1));
-                Object invoke = clazz.getMethod(getName.toString()).invoke(t);
+                Object invoke = null;
+                try {
+                    invoke = clazz.getMethod(getName.toString()).invoke(t);
+                } catch (Exception e) {
+                    System.err.println("对应的实体里面没有方法: " + getName);
+                }
                 switch (enums.getVulue()) {
                     case 0:
                         getMap(map, property, invoke, enums);
@@ -37,14 +60,17 @@ public class PickToolImpl {
                         getMap(maps, property, invoke, enums);
                         break;
                     case 3:
-                        sets.add(invoke);
+                        if (invoke != null)
+                            sets.add(invoke);
+                        else if (1 != enums.getNullDiscard())
+                            sets.add(invoke);
                         break;
                     default:
                         throw new Exception("数据输出超出范围 参考PickEnum定义");
                 }
-                if (enums.getVulue() == 0 || enums.getVulue() == 1)
-                    lists.add(map);
             }
+            if (enums.getVulue() == 0 || enums.getVulue() == 1)
+                lists.add(map);
         }
         if (sets != null && sets.size() != 0)
             return sets;

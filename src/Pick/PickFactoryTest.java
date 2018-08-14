@@ -61,7 +61,7 @@ public class PickFactoryTest {
         // tips 默认设置
         Set batch1 = PickFactory.batch().pickValue(list, "id", "name", "email");
         System.out.println(Arrays.asList(batch1).toString());
-        Set batch = PickFactory.batch().pickValue(list, PickEnum.DEFAULT.setNullDiscard(0), "id", "name", "email");
+        Set batch = PickFactory.batch().pickValue(list, PickEnum.DEFAULT.setNullDiscard(1), "id", "name", "email");
         System.out.println(Arrays.asList(batch).toString());
 
     }

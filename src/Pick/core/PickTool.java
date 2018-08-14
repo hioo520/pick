@@ -88,4 +88,30 @@ public class PickTool extends PickToolImpl implements PickFactory {
         return ((List<Map>) batch(list, enums.setVulue(2), str)).get(0);
     }
 
+    /**
+     * TIPS 集合Map 取出选定字段 默认 value为空时 保存
+     *
+     * @param map
+     * @param str
+     * @Author:hihuzi 2018/8/3 17:09
+     */
+    @Override
+    public Map pickMap(Map map, String... str) {
+
+        return batchMap(map, PickEnum.pickMap, str);
+    }
+
+    /**
+     * TIPS 集合Map 取出选定字段 value 是否保存  PickEnum.DEFAULT.setVulue(0) -->表示保存 其它的 舍弃
+     *
+     * @param map
+     * @param str
+     * @Author:hihuzi 2018/8/3 17:09
+     */
+    @Override
+    public Map pickMap(Map map, PickEnum enums, String... str) {
+
+        return batchMap(map, enums, str);
+    }
+
 }

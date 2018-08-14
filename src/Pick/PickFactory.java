@@ -54,6 +54,25 @@ public interface PickFactory {
      */
     <E> Map pickSingle(E obj, String... str) throws Exception;
 
+    /**
+     * tips 单个对象 返回选定字段
+     *
+     * @Author:hihuzi 2018/4/30 15:49
+     */
     <E> Map pickSingle(E obj, PickEnum pickEnum, String... str) throws Exception;
+
+    /**
+     * TIPS 集合Map 取出选定字段
+     *
+     * @Author:hihuzi 2018/8/3 17:09
+     */
+    Map pickMap(Map map, String... str);
+
+    /**
+     * TIPS 集合Map 取出选定字段
+     *
+     * @Author:hihuzi 2018/8/3 17:09
+     */
+    Map pickMap(Map map, PickEnum enums, String... str);
 
 }
